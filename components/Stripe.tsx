@@ -1,27 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 
 type props = {
     row: number;
     callback: any,
     RowState: boolean,
+    alive: boolean,
+    selectCallback:any,
+    id:number
 
 }
 
 const Stripe = (props:props) => {
-    const [alive, setAlive] = useState<boolean>(true);
     const [selected, setSelected] = useState<boolean>(false);
     useEffect(() =>{
         if(!props.RowState){
             setSelected(props.RowState)
-
         }
         }
     ,[props.RowState])
 
+    useEffect(() =>{
+            setSelected(false)
+        }
+        ,[props.alive])
+
     const RowCheck = () =>{
         props.callback()
         setSelected(!selected)
+        props.selectCallback(props.id)
 
     }
     const styles = StyleSheet.create({
@@ -29,7 +36,8 @@ const Stripe = (props:props) => {
             backgroundColor: selected? '#ab0707': "#000",
             height:100,
             width:20,
-            margin:20
+            margin:20,
+            display: props.alive? "flex": "none"
         },
     });
 
